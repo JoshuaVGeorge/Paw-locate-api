@@ -14,7 +14,7 @@ const getAllUsers = (req, res) => {
 
 const isNotUser = (req, res, next) => {
 	knex("users")
-		.where({ user_name: req.body.username })
+		.where({ user_name: req.body.user_name })
 		.then((user) => {
 			if (user.length === 0) {
 				next();
@@ -25,15 +25,19 @@ const isNotUser = (req, res, next) => {
 };
 
 const createUser = (req, res) => {
-	const { username, password } = req.body;
+	console.log(req.body);
 	knex("users")
 		.insert(req.body)
 		.then((result) => {
-			console.log(`profile created ${result}`);
-			res.status(201).json(req.body);
+			console.log(`profile created id:${result}`);
+			return knex("users").where({ id: result[0] });
 		})
-		.catch(() => {
-			res.status(500);
+		.then((newUser) => {
+			res.status(201).json(newUser);
+			return newUser;
+		})
+		.catch((err) => {
+			res.status(500).send(`${err}`);
 		});
 };
 
