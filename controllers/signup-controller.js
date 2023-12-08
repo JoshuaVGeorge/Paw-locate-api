@@ -12,8 +12,33 @@ const getAllUsers = (req, res) => {
 		});
 };
 
-const createUser = (req, res) => {};
+const isNotUser = (req, res, next) => {
+	knex("users")
+		.where({ user_name: req.body.username })
+		.then((user) => {
+			if (user.length === 0) {
+				next();
+			} else {
+				return res.status(403).json({ message: "username already exists" });
+			}
+		});
+};
+
+const createUser = (req, res) => {
+	const { username, password } = req.body;
+	knex("users")
+		.insert(req.body)
+		.then((result) => {
+			console.log(`profile created ${result}`);
+			res.status(201).json(req.body);
+		})
+		.catch(() => {
+			res.status(500);
+		});
+};
 
 module.exports = {
 	getAllUsers,
+	createUser,
+	isNotUser,
 };
