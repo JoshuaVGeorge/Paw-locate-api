@@ -13,6 +13,8 @@ app.get("/", (req, res) => {
 	res.send("welcome to paw-locate-api");
 });
 
+// routes
+
 app.listen(port, () => {
 	console.log("paw-locate-api launched");
 });
