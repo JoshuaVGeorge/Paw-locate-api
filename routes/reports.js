@@ -5,6 +5,7 @@ const reportController = require("../controllers/reports-controller");
 router
 	.route("/")
 	.get(reportController.getAllReports)
-	.post(reportController.createNewReport);
+	.post(reportController.createNewReport)
+	.patch(reportController.updateReport);
 
 module.exports = router;
