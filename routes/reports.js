@@ -8,4 +8,6 @@ router
 	.post(reportController.createNewReport)
 	.patch(reportController.updateReport);
 
+router.route("/:id").get(reportController.getProfileReports);
+
 module.exports = router;
