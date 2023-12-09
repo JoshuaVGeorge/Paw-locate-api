@@ -22,6 +22,9 @@ app.use("/signup", signupRoutes);
 const reportRoutes = require("./routes/reports");
 app.use("/reports", reportRoutes);
 
+const profileRoutes = require("./routes/profile");
+app.use("/profile", profileRoutes);
+
 app.listen(port, () => {
 	console.log("paw-locate-api launched");
 });
