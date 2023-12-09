@@ -67,11 +67,11 @@ const updateReport = (req, res) => {
 	}
 
 	knex("reports")
-		.where({ id: req.body.id })
+		.where({ id: req.params.id })
 		.update(req.body)
 		.then(() => {
 			return knex("reports").where({
-				id: req.body.id,
+				id: req.params.id,
 			});
 		})
 		.then((updatedReport) => {
