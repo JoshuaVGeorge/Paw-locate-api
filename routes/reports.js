@@ -5,9 +5,11 @@ const reportController = require("../controllers/reports-controller");
 router
 	.route("/")
 	.get(reportController.getAllReports)
-	.post(reportController.createNewReport)
-	.patch(reportController.updateReport);
+	.post(reportController.createNewReport);
 
-router.route("/:id").get(reportController.getReportID);
+router
+	.route("/:id")
+	.get(reportController.getReportID)
+	.patch(reportController.updateReport);
 
 module.exports = router;
