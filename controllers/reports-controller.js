@@ -98,9 +98,27 @@ const getProfileReports = (req, res) => {
 			res.status(500).json({ message: `${err}` });
 		});
 };
+
+const getReportID = (req, res) => {
+	knex("reports")
+		.where({ id: req.params.id })
+		.then((report) => {
+			if (report.length === 0) {
+				res
+					.status(404)
+					.json({ message: `no reports with ID: ${req.params.id} exist` });
+			} else {
+				res.send(report);
+			}
+		})
+		.catch((err) => {
+			res.status(500).json({ message: `${err}` });
+		});
+};
+
 module.exports = {
 	getAllReports,
 	createNewReport,
 	updateReport,
-	getProfileReports,
+	getReportID,
 };
