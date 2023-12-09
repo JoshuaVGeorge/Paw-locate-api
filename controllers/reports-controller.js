@@ -45,7 +45,44 @@ const createNewReport = (req, res) => {
 		});
 };
 
+const updateReport = (req, res) => {
+	const {
+		pet_name,
+		pet_image,
+		description,
+		contact_info,
+		location_data,
+		status,
+	} = req.body;
+
+	if (
+		!pet_name ||
+		!pet_image ||
+		!description ||
+		!contact_info ||
+		!location_data ||
+		!status
+	) {
+		return res.status(400).send("Please make sure to fill all fields");
+	}
+
+	knex("reports")
+		.where({ id: req.body.id })
+		.update(req.body)
+		.then(() => {
+			return knex("reports").where({
+				id: req.body.id,
+			});
+		})
+		.then((updatedReport) => {
+			res.json(updatedReport);
+		})
+		.catch((err) => {
+			res.status(500).json({ message: `${err}` });
+		});
+};
 module.exports = {
 	getAllReports,
 	createNewReport,
+	updateReport,
 };
