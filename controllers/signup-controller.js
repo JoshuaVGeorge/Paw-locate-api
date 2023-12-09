@@ -11,7 +11,7 @@ const getAllUsers = (req, res) => {
 			res.status(500).send(`${err}`);
 		});
 };
-
+// ---------------------------------------------
 const isNotUser = (req, res, next) => {
 	knex("users")
 		.where({ user_name: req.body.user_name })
