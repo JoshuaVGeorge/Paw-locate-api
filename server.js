@@ -19,6 +19,9 @@ app.get("/", (req, res) => {
 const signupRoutes = require("./routes/signup");
 app.use("/signup", signupRoutes);
 
+const reportRoutes = require("./routes/reports");
+app.use("/reports", reportRoutes);
+
 app.listen(port, () => {
 	console.log("paw-locate-api launched");
 });
