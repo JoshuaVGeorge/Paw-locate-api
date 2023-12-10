@@ -13,6 +13,7 @@ const getAllUsers = (req, res) => {
 		});
 };
 // ---------------------------------------------
+
 const isNotUser = (req, res, next) => {
 	knex("users")
 		.where({ user_name: req.body.user_name })
@@ -26,9 +27,15 @@ const isNotUser = (req, res, next) => {
 };
 
 const createUser = (req, res) => {
-	console.log(req.body);
+	const hashedPass = bcrypt.hashSync(req.body.password, 10);
+
+	const newUser = {
+		user_name: req.body.user_name,
+		password: hashedPass,
+	};
+
 	knex("users")
-		.insert(req.body)
+		.insert(newUser)
 		.then((result) => {
 			console.log(`profile created id:${result}`);
 			return knex("users").where({ id: result[0] });
