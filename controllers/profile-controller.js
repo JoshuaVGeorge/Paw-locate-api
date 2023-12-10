@@ -2,6 +2,7 @@ const knex = require("knex")(require("../knexfile"));
 const bcrypt = require("bcrypt");
 
 const authenticate = (req, res, next) => {
+	// fix the nested if statments
 	knex("users as u")
 		.where({ "u.user_name": req.body.user_name })
 		.select("*")
