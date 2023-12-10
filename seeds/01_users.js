@@ -9,22 +9,22 @@ exports.seed = async function (knex) {
 		{
 			id: 1,
 			user_name: "pmatiebe0",
-			password: "$2a$04$y7OrSQiKDCmpsNfUMUAlwecqzuIAN9YUpyDYwJaM2OYQyNCvZiSDW",
+			password: "$2a$10$V2YNmmw2cQA3K6JpKlzaJuqkjst4heptBwyYTaFGgEa1rnq5WeKZ6",
 		},
 		{
 			id: 2,
 			user_name: "cphilbrick1",
-			password: "$2a$04$6fD2962cCVmJjeKt785kq.EP8JMU8YAHvSvZGZHVsyS8VEh15wxrC",
+			password: "$2a$10$HX6aIXwV0wqoLr40v4rRautg7247e91D.fRmdnmqAHVjybhfT/G8m",
 		},
 		{
 			id: 3,
 			user_name: "swixey2",
-			password: "$2a$04$9RRHVmV28aWK9rArr9BjvOfMpyPdHOJ/Em0yVpSjbCMKsLa9oExX6",
+			password: "$2a$10$udTAiDgUWLn9CBPQEaLFyOp5TOrrm/Vwteb73bYCc42ZcGG.2liZq",
 		},
 		{
 			id: 4,
 			user_name: "etomkies3",
-			password: "$2a$04$zn6Iyi.bwX..9xg9.sOpP.FAUb4dULjV.5NMDXyoOlP48BpixVbNK",
+			password: "$2a$10$GNptDQYdS5aQCE.pl8.HZ.dqpTMHJ2ldmEp1OlJoyg17ScPCi1sxa",
 		},
 	]);
 };
