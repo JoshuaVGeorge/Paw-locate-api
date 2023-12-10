@@ -1,4 +1,5 @@
 const knex = require("knex")(require("../knexfile"));
+const bcrypt = require("bcrypt");
 
 // just for testing . remove eventually
 const getAllUsers = (req, res) => {
