@@ -3,15 +3,13 @@ const bcrypt = require("bcrypt");
 
 const authenticate = (req, res, next) => {
 	knex("users as u")
-		.where({ "u.id": req.params.id })
+		.where({ "u.user_name": req.body.user_name })
 		.select("*")
 		.then((profile) => {
 			if (profile.length === 0) {
 				console.log("no user");
 				res.status(403).json({ message: "username and password do not match" });
 			} else {
-				// console.log(profile[0].password);
-				// next();
 				bcrypt.compare(
 					req.body.password,
 					profile[0].password,
@@ -32,8 +30,8 @@ const authenticate = (req, res, next) => {
 
 const getProfile = (req, res) => {
 	knex("users as u")
-		.where({ "u.id": req.params.id })
-		.select("u.user_name")
+		.where({ "u.user_name": req.body.user_name })
+		.select("u.id", "u.user_name")
 		.then((profile) => {
 			res.send(profile);
 		});
