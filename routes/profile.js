@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const profileController = require("../controllers/profile-controller");
 
-router.route("/:id").get(profileController.getProfile);
+router
+	.route("/")
+	.get(profileController.authenticate, profileController.getProfile);
 
 router.route("/:id/reports").get(profileController.getProfileReports);
 

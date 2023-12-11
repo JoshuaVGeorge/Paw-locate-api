@@ -1,9 +1,38 @@
 const knex = require("knex")(require("../knexfile"));
+const bcrypt = require("bcrypt");
+
+const authenticate = (req, res, next) => {
+	// fix the nested if statments
+	knex("users as u")
+		.where({ "u.user_name": req.body.user_name })
+		.select("*")
+		.then((profile) => {
+			if (profile.length === 0) {
+				console.log("no user");
+				res.status(403).json({ message: "username and password do not match" });
+			} else {
+				bcrypt.compare(
+					req.body.password,
+					profile[0].password,
+					(err, result) => {
+						if (result) {
+							next();
+						} else {
+							console.log("wrong pass");
+							res
+								.status(403)
+								.json({ message: "username and password do not match" });
+						}
+					}
+				);
+			}
+		});
+};
 
 const getProfile = (req, res) => {
 	knex("users as u")
-		.where({ "u.id": req.params.id })
-		.select("u.user_name")
+		.where({ "u.user_name": req.body.user_name })
+		.select("u.id", "u.user_name")
 		.then((profile) => {
 			res.send(profile);
 		});
@@ -49,4 +78,5 @@ module.exports = {
 	getProfile,
 	getProfileReports,
 	getProfileTips,
+	authenticate,
 };
