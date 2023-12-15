@@ -102,7 +102,8 @@ const getReportID = (req, res) => {
 const getReportTips = (req, res) => {
 	knex("tips as t")
 		.where({ "t.report_id": req.params.id })
-		.select("t.id", "t.text_data", "t.status", "t.image")
+		.join("users as u", "t.user_id", "=", "u.id")
+		.select("t.id", "t.text_data", "t.status", "t.image", "u.user_name")
 		.then((reports) => {
 			if (reports.length === 0) {
 				res
