@@ -99,9 +99,28 @@ const getReportID = (req, res) => {
 		});
 };
 
+const getReportTips = (req, res) => {
+	knex("tips as t")
+		.where({ "t.report_id": req.params.id })
+		.select("t.id", "t.text_data", "t.status", "t.image")
+		.then((reports) => {
+			if (reports.length === 0) {
+				res
+					.status(404)
+					.json({ message: `no tips with report ID: ${req.params.id} exist` });
+			} else {
+				res.send(reports);
+			}
+		})
+		.catch((err) => {
+			res.status(500).json({ message: `${err}` });
+		});
+};
+
 module.exports = {
 	getAllReports,
 	createNewReport,
 	updateReport,
 	getReportID,
+	getReportTips,
 };
