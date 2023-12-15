@@ -12,4 +12,6 @@ router
 	.get(reportController.getReportID)
 	.patch(reportController.updateReport);
 
+router.route("/:id/tips").get(reportController.getReportTips);
+
 module.exports = router;
