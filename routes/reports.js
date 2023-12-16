@@ -23,7 +23,7 @@ router
 router
 	.route("/:id")
 	.get(reportController.getReportID)
-	.patch(reportController.updateReport);
+	.patch(upload.single("pet_image"), reportController.updateReport);
 
 router.route("/:id/tips").get(reportController.getReportTips);
 
