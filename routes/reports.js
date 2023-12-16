@@ -18,7 +18,7 @@ const upload = multer({ storage: storage });
 router
 	.route("/")
 	.get(reportController.getAllReports)
-	.post(upload.single("image"), reportController.createNewReport);
+	.post(upload.single("pet_image"), reportController.createNewReport);
 
 router
 	.route("/:id")
