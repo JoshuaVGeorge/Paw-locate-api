@@ -1,4 +1,7 @@
 const knex = require("knex")(require("../knexfile"));
+require("dotenv").config();
+
+const ApiUrl = process.env.API_URL;
 
 const getAllReports = (req, res) => {
 	knex("reports")
@@ -12,28 +15,24 @@ const getAllReports = (req, res) => {
 };
 
 const createNewReport = (req, res) => {
-	const {
-		user_id,
-		pet_name,
-		pet_image,
-		description,
-		contact_info,
-		location_data,
-	} = req.body;
+	const { user_id, pet_name, description, location_data } = req.body;
 
-	if (
-		!user_id ||
-		!pet_name ||
-		!pet_image ||
-		!description ||
-		!contact_info ||
-		!location_data
-	) {
+	if (!user_id || !pet_name || !description || !location_data) {
 		return res.status(400).send("Please make sure to fill all fields");
 	}
 
+	const newReport = {
+		user_id: user_id,
+		pet_name: pet_name,
+		pet_image: `${ApiUrl}/images/${req.file.filename}`,
+		description: description,
+		location_data: location_data,
+		contact_info: "none",
+		status: 0,
+	};
+
 	knex("reports")
-		.insert(req.body)
+		.insert(newReport)
 		.then((result) => {
 			return knex("reports").where({ id: result[0] });
 		})
@@ -46,47 +45,46 @@ const createNewReport = (req, res) => {
 };
 
 const updateReport = (req, res) => {
-	const {
-		pet_name,
-		pet_image,
-		description,
-		contact_info,
-		location_data,
-		status,
-	} = req.body;
-
-	if (
-		!pet_name ||
-		!pet_image ||
-		!description ||
-		!contact_info ||
-		!location_data ||
-		!status
-	) {
-		return res.status(400).send("Please make sure to fill all fields");
-	}
-
-	knex("reports")
-		.where({ id: req.params.id })
-		.update({
-			pet_name,
-			pet_image,
-			description,
-			contact_info,
-			location_data,
-			status,
-		})
-		.then(() => {
-			return knex("reports").where({
-				id: req.params.id,
-			});
-		})
-		.then((updatedReport) => {
-			res.json(updatedReport);
-		})
-		.catch((err) => {
-			res.status(500).json({ message: `${err}` });
-		});
+	console.log(req.body);
+	// const {
+	// 	pet_name,
+	// 	pet_image,
+	// 	description,
+	// 	contact_info,
+	// 	location_data,
+	// 	status,
+	// } = req.body;
+	// if (
+	// 	!pet_name ||
+	// 	!pet_image ||
+	// 	!description ||
+	// 	!contact_info ||
+	// 	!location_data ||
+	// 	!status
+	// ) {
+	// 	return res.status(400).send("Please make sure to fill all fields");
+	// }
+	// knex("reports")
+	// 	.where({ id: req.params.id })
+	// 	.update({
+	// 		pet_name,
+	// 		pet_image,
+	// 		description,
+	// 		contact_info,
+	// 		location_data,
+	// 		status,
+	// 	})
+	// 	.then(() => {
+	// 		return knex("reports").where({
+	// 			id: req.params.id,
+	// 		});
+	// 	})
+	// 	.then((updatedReport) => {
+	// 		res.json(updatedReport);
+	// 	})
+	// 	.catch((err) => {
+	// 		res.status(500).json({ message: `${err}` });
+	// 	});
 };
 
 const getReportID = (req, res) => {
