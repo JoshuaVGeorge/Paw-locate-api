@@ -68,7 +68,14 @@ const updateReport = (req, res) => {
 
 	knex("reports")
 		.where({ id: req.params.id })
-		.update(req.body)
+		.update({
+			pet_name,
+			pet_image,
+			description,
+			contact_info,
+			location_data,
+			status,
+		})
 		.then(() => {
 			return knex("reports").where({
 				id: req.params.id,
