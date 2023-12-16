@@ -1,4 +1,5 @@
 const knex = require("knex")(require("../knexfile"));
+
 const bcrypt = require("bcrypt");
 
 const authenticate = (req, res, next) => {
