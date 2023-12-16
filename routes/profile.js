@@ -4,7 +4,7 @@ const profileController = require("../controllers/profile-controller");
 
 router
 	.route("/")
-	.get(profileController.authenticate, profileController.getProfile);
+	.post(profileController.authenticate, profileController.getProfile);
 
 router.route("/:id/reports").get(profileController.getProfileReports);
 
