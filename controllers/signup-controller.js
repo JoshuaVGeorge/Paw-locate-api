@@ -21,19 +21,17 @@ const isNotUser = (req, res, next) => {
 			if (user.length === 0) {
 				next();
 			} else {
-				return res.status(403).json({ message: "username already exists" });
+				return res.status(403).send("username already exists");
 			}
 		});
 };
 
 const createUser = (req, res) => {
 	const hashedPass = bcrypt.hashSync(req.body.password, 10);
-
 	const newUser = {
 		user_name: req.body.user_name,
 		password: hashedPass,
 	};
-
 	knex("users")
 		.insert(newUser)
 		.then((result) => {
