@@ -1,7 +1,10 @@
 const knex = require("knex")(require("../knexfile"));
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const bcrypt = require("bcrypt");
+
+const secretKey = process.env.SECRET_KEY;
 
 const authenticate = (req, res, next) => {
 	// fix the nested if statments
@@ -21,9 +24,10 @@ const authenticate = (req, res, next) => {
 							next();
 						} else {
 							console.log("wrong pass");
-							res
-								.status(403)
-								.json({ message: "username and password do not match" });
+							res.status(403).json({
+								message: "username and password do not match",
+								token: null,
+							});
 						}
 					}
 				);
@@ -36,7 +40,8 @@ const getProfile = (req, res) => {
 		.where({ "u.user_name": req.body.user_name })
 		.select("u.id", "u.user_name")
 		.then((profile) => {
-			res.send(profile);
+			let token = jwt.sign({ user_name: req.body.user_name }, secretKey);
+			res.json({ token: token, profile: profile });
 		});
 };
 
