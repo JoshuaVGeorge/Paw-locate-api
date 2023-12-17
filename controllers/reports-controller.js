@@ -99,13 +99,7 @@ const getReportTips = (req, res) => {
 		.join("users as u", "t.user_id", "=", "u.id")
 		.select("t.id", "t.text_data", "t.status", "t.image", "u.user_name")
 		.then((reports) => {
-			if (reports.length === 0) {
-				res
-					.status(404)
-					.json({ message: `no tips with report ID: ${req.params.id} exist` });
-			} else {
-				res.send(reports);
-			}
+			res.send(reports);
 		})
 		.catch((err) => {
 			res.status(500).json({ message: `${err}` });
