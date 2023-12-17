@@ -99,13 +99,40 @@ const getReportTips = (req, res) => {
 		.join("users as u", "t.user_id", "=", "u.id")
 		.select("t.id", "t.text_data", "t.status", "t.image", "u.user_name")
 		.then((reports) => {
-			if (reports.length === 0) {
-				res
-					.status(404)
-					.json({ message: `no tips with report ID: ${req.params.id} exist` });
-			} else {
-				res.send(reports);
-			}
+			res.send(reports);
+		})
+		.catch((err) => {
+			res.status(500).json({ message: `${err}` });
+		});
+};
+
+const postTip = (req, res) => {
+	const { reportId, userId, text_data } = req.body;
+	let imgURL = "no image";
+
+	if (!text_data) {
+		return res.status(400).send("Please fill text field");
+	}
+
+	if (req.file) {
+		imgURL = `${ApiUrl}/images/tips/${req.file.filename}`;
+	}
+
+	const newTip = {
+		report_id: reportId,
+		user_id: userId,
+		text_data: text_data,
+		image: imgURL,
+		status: 0,
+	};
+
+	knex("tips")
+		.insert(newTip)
+		.then((result) => {
+			return knex("tips").where({ id: result[0] });
+		})
+		.then((newTip) => {
+			res.status(201).json(newTip);
 		})
 		.catch((err) => {
 			res.status(500).json({ message: `${err}` });
@@ -118,4 +145,5 @@ module.exports = {
 	updateReport,
 	getReportID,
 	getReportTips,
+	postTip,
 };
