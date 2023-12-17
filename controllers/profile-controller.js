@@ -1,6 +1,10 @@
 const knex = require("knex")(require("../knexfile"));
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const bcrypt = require("bcrypt");
+
+const secretKey = process.env.SECRET_KEY;
 
 const authenticate = (req, res, next) => {
 	// fix the nested if statments
@@ -20,9 +24,10 @@ const authenticate = (req, res, next) => {
 							next();
 						} else {
 							console.log("wrong pass");
-							res
-								.status(403)
-								.json({ message: "username and password do not match" });
+							res.status(403).json({
+								message: "username and password do not match",
+								token: null,
+							});
 						}
 					}
 				);
@@ -35,7 +40,8 @@ const getProfile = (req, res) => {
 		.where({ "u.user_name": req.body.user_name })
 		.select("u.id", "u.user_name")
 		.then((profile) => {
-			res.send(profile);
+			let token = jwt.sign({ user_name: req.body.user_name }, secretKey);
+			res.json({ token: token, profile: profile });
 		});
 };
 
@@ -45,9 +51,10 @@ const getProfileReports = (req, res) => {
 		.select("r.id", "r.pet_name", "r.status")
 		.then((reports) => {
 			if (reports.length === 0) {
-				res
-					.status(404)
-					.json({ message: `no reports with user ID: ${req.params.id} exist` });
+				res.json({
+					message: `no reports with user ID: ${req.params.id} exist`,
+					data: [],
+				});
 			} else {
 				res.send(reports);
 			}
@@ -61,14 +68,8 @@ const getProfileTips = (req, res) => {
 	knex("tips as t")
 		.where({ "t.user_id": req.params.id })
 		.select("t.id", "t.text_data", "t.status", "t.image")
-		.then((reports) => {
-			if (reports.length === 0) {
-				res
-					.status(404)
-					.json({ message: `no tips with user ID: ${req.params.id} exist` });
-			} else {
-				res.send(reports);
-			}
+		.then((tips) => {
+			res.send(tips);
 		})
 		.catch((err) => {
 			res.status(500).json({ message: `${err}` });
