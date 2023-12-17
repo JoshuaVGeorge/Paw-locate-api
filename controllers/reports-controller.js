@@ -112,10 +112,44 @@ const getReportTips = (req, res) => {
 		});
 };
 
+const postTip = (req, res) => {
+	const { reportId, userId, text_data } = req.body;
+	let imgURL = "no image";
+
+	if (!text_data) {
+		return res.status(400).send("Please fill text field");
+	}
+
+	if (req.file) {
+		imgURL = `${ApiUrl}/images/tips/${req.file.filename}`;
+	}
+
+	const newTip = {
+		report_id: reportId,
+		user_id: userId,
+		text_data: text_data,
+		image: imgURL,
+		status: 0,
+	};
+
+	knex("tips")
+		.insert(newTip)
+		.then((result) => {
+			return knex("tips").where({ id: result[0] });
+		})
+		.then((newTip) => {
+			res.status(201).json(newTip);
+		})
+		.catch((err) => {
+			res.status(500).json({ message: `${err}` });
+		});
+};
+
 module.exports = {
 	getAllReports,
 	createNewReport,
 	updateReport,
 	getReportID,
 	getReportTips,
+	postTip,
 };
