@@ -13,7 +13,18 @@ const storage = multer.diskStorage({
 	},
 });
 
+const storeTip = multer.diskStorage({
+	destination: (req, file, cb) => {
+		cb(null, "./public/images/tips");
+	},
+	filename: (req, file, cb) => {
+		cb(null, Date.now() + path.extname(file.originalname));
+	},
+});
+
 const upload = multer({ storage: storage });
+
+const uploadTip = multer({ storage: storeTip });
 
 router
 	.route("/")
@@ -25,6 +36,9 @@ router
 	.get(reportController.getReportID)
 	.patch(upload.single("pet_image"), reportController.updateReport);
 
-router.route("/:id/tips").get(reportController.getReportTips);
+router
+	.route("/:id/tips")
+	.get(reportController.getReportTips)
+	.post(uploadTip.single("image"), reportController.postTip);
 
 module.exports = router;
