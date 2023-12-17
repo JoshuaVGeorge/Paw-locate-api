@@ -51,9 +51,10 @@ const getProfileReports = (req, res) => {
 		.select("r.id", "r.pet_name", "r.status")
 		.then((reports) => {
 			if (reports.length === 0) {
-				res
-					.status(404)
-					.json({ message: `no reports with user ID: ${req.params.id} exist` });
+				res.json({
+					message: `no reports with user ID: ${req.params.id} exist`,
+					data: [],
+				});
 			} else {
 				res.send(reports);
 			}
@@ -67,14 +68,8 @@ const getProfileTips = (req, res) => {
 	knex("tips as t")
 		.where({ "t.user_id": req.params.id })
 		.select("t.id", "t.text_data", "t.status", "t.image")
-		.then((reports) => {
-			if (reports.length === 0) {
-				res
-					.status(404)
-					.json({ message: `no tips with user ID: ${req.params.id} exist` });
-			} else {
-				res.send(reports);
-			}
+		.then((tips) => {
+			res.send(tips);
 		})
 		.catch((err) => {
 			res.status(500).json({ message: `${err}` });
