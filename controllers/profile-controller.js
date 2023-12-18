@@ -67,7 +67,8 @@ const getProfileReports = (req, res) => {
 const getProfileTips = (req, res) => {
 	knex("tips as t")
 		.where({ "t.user_id": req.params.id })
-		.select("t.id", "t.text_data", "t.status", "t.image")
+		.join("reports as r", "t.report_id", "=", "r.id")
+		.select("t.id", "t.text_data", "t.status", "t.image", "r.id as report_id")
 		.then((tips) => {
 			res.send(tips);
 		})
