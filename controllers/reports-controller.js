@@ -24,7 +24,7 @@ const createNewReport = (req, res) => {
 	const newReport = {
 		user_id: user_id,
 		pet_name: pet_name,
-		pet_image: `${ApiUrl}/images/${req.file.filename}`,
+		pet_image: `${ApiUrl}/images/reports/${req.file.filename}`,
 		description: description,
 		location_data: location_data,
 		contact_info: "none",
