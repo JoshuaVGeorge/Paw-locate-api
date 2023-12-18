@@ -1,19 +1,6 @@
 const knex = require("knex")(require("../knexfile"));
 const bcrypt = require("bcrypt");
 
-// just for testing . remove eventually
-const getAllUsers = (req, res) => {
-	knex("users")
-		.select("*")
-		.then((data) => {
-			res.status(200).send(data);
-		})
-		.catch((err) => {
-			res.status(500).send(`${err}`);
-		});
-};
-// ---------------------------------------------
-
 const isNotUser = (req, res, next) => {
 	knex("users")
 		.where({ user_name: req.body.user_name })
